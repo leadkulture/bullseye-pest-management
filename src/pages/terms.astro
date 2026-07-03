@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { business } from '../data/business';
+---
+
+<BaseLayout title="Terms of Use | Bullseye Pest Management" description="Terms of use for the Bullseye Pest Management website." canonicalPath="/terms/">
+  <Breadcrumbs crumbs={[{ label: 'Terms of Use', href: '/terms/' }]} />
+  <section class="max-w-container mx-auto px-4 py-10">
+    <div class="max-w-3xl mx-auto prose-content">
+      <h1 class="text-3xl sm:text-4xl font-display font-extrabold text-ink">Terms of Use</h1>
+      <p><strong>Last updated:</strong> July 3, 2026</p>
+      <p>By using this website you agree to these terms. If you do not agree, please do not use the site.</p>
+      <h2>Content</h2>
+      <p>The content on this site is provided for general informational purposes about Bullseye Pest Management, LLC and its services. Pricing, availability, and product information are subject to change without notice. Every job is quoted after an in-person inspection.</p>
+      <h2>Service Requests</h2>
+      <p>Submitting a form or requesting a quote does not create a contract. A service agreement is created when we schedule work with you and you accept our written quote.</p>
+      <h2>Intellectual Property</h2>
+      <p>Logos, images, and text on this site are owned by Bullseye Pest Management, LLC or used with permission. Do not reproduce without written consent.</p>
+      <h2>Contact</h2>
+      <p>Questions? Contact us at <a href={`mailto:${business.email}`}>{business.email}</a> or {business.phone.primary}.</p>
+    </div>
+  </section>
+</BaseLayout>

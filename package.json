@@ -1,0 +1,20 @@
+{
+  "name": "bullseye-pest-management",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Bullseye Pest Management website - Dallas/Fort Worth pest control",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^5.1.1",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.17"
+  }
+}

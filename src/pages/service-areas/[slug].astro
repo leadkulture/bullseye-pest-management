@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQBlock from '../../components/FAQBlock.astro';
+import CTABand from '../../components/CTABand.astro';
+import TrustBadges from '../../components/TrustBadges.astro';
+import { serviceAreas } from '../../data/service-areas';
+import { services } from '../../data/services';
+import { business, primaryCTA } from '../../data/business';
+
+export async function getStaticPaths() {
+  return serviceAreas.map(area => ({
+    params: { slug: area.slug },
+    props: { area },
+  }));
+}
+
+const { area } = Astro.props;
+
+const areaServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `Pest Control in ${area.city}, ${area.state}`,
+  serviceType: 'Pest Control',
+  provider: { '@id': `${business.urls.canonical}/#localbusiness` },
+  areaServed: {
+    '@type': 'City',
+    name: area.city,
+    containedInPlace: { '@type': 'State', name: 'Texas' },
+  },
+  url: `${business.urls.canonical}/service-areas/${area.slug}/`,
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: area.faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const otherAreas = serviceAreas.filter(a => a.slug !== area.slug);
+---
+
+<BaseLayout
+  title={area.metaTitle}
+  description={area.metaDescription}
+  canonicalPath={`/service-areas/${area.slug}/`}
+  extraSchema={[areaServiceSchema, faqSchema]}
+>
+  <Breadcrumbs crumbs={[
+    { label: 'Service Areas', href: '/service-areas/' },
+    { label: area.city, href: `/service-areas/${area.slug}/` },
+  ]} />
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-brand-green-dark via-brand-green to-ink text-white">
+    <div class="max-w-container mx-auto px-4 py-12 sm:py-16">
+      <p class="inline-block bg-brand-red text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded mb-3">
+        Serving {area.city} Since {business.foundedYear}
+      </p>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold leading-tight max-w-4xl">
+        {area.h1}
+      </h1>
+      <p class="mt-4 text-xl text-brand-red-light font-medium">{area.hero.headline}</p>
+      <p class="mt-3 text-white/90 max-w-3xl">{area.hero.sub}</p>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <a href={primaryCTA.href} class="inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-6 py-3.5 rounded-md min-h-[48px] shadow-lg">
+          Call {business.phone.primary}
+        </a>
+        <a href="/contact/" class="inline-flex items-center justify-center gap-2 bg-white/10 border-2 border-white/60 text-white font-semibold px-6 py-3.5 rounded-md min-h-[48px]">
+          Get a Free Quote
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Local context (unique per city) -->
+  <section class="max-w-container mx-auto px-4 py-12">
+    <div class="max-w-3xl">
+      <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-4">
+        Pest Control the {area.city} Way
+      </h2>
+      <p class="text-ink-soft leading-relaxed">{area.localContext}</p>
+    </div>
+  </section>
+
+  <!-- Neighborhoods + Landmarks -->
+  <section class="max-w-container mx-auto px-4 pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-surface-soft border border-gray-200 rounded-lg p-6">
+        <h3 class="text-lg font-display font-bold text-ink mb-3">Neighborhoods We Serve in {area.city}</h3>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 text-sm text-ink-soft">
+          {area.neighborhoods.map(n => (
+            <li class="flex items-center gap-2">
+              <span class="text-brand-red font-bold">&bull;</span>
+              <span>{n}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="bg-surface-soft border border-gray-200 rounded-lg p-6">
+        <h3 class="text-lg font-display font-bold text-ink mb-3">Near These {area.city} Landmarks</h3>
+        <ul class="space-y-1.5 text-sm text-ink-soft">
+          {area.landmarks.map(l => (
+            <li class="flex items-start gap-2">
+              <span class="text-brand-red font-bold mt-0.5">&#9733;</span>
+              <span>{l}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- City-specific angle -->
+  <section class="bg-surface-soft">
+    <div class="max-w-container mx-auto px-4 py-12">
+      <div class="max-w-3xl">
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-4">
+          {area.localAngle.title}
+        </h2>
+        <p class="text-ink-soft leading-relaxed">{area.localAngle.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services in this city (internal links) -->
+  <section class="max-w-container mx-auto px-4 py-12">
+    <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-6">
+      Services We Offer in {area.city}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {services.map(s => (
+        <a href={`/services/${s.slug}/`} class="group block bg-white border border-gray-200 rounded-lg p-5 hover:border-brand-red hover:shadow-card transition-all">
+          <h3 class="text-base font-display font-bold text-ink group-hover:text-brand-red">
+            {s.title} in {area.city}
+          </h3>
+          <p class="mt-2 text-sm text-ink-soft leading-snug">{s.shortDescription}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <TrustBadges variant="dark" />
+
+  <CTABand
+    headline={`${area.city} pest control, done right.`}
+    sub={`Call ${business.phone.primary} for a free ${area.city} inspection.`}
+  />
+
+  <FAQBlock title={`${area.city} Pest Control FAQs`} faqs={area.faqs} emitSchema={false} />
+
+  <!-- Other service areas -->
+  <section class="max-w-container mx-auto px-4 pb-16">
+    <h2 class="text-2xl font-display font-bold text-ink mb-4">Other DFW Cities We Serve</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {otherAreas.map(o => (
+        <a href={`/service-areas/${o.slug}/`} class="bg-white border border-gray-200 rounded-md p-3 text-center hover:border-brand-red hover:shadow-card transition-all">
+          <span class="text-sm font-semibold text-ink">{o.city}, {o.state}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

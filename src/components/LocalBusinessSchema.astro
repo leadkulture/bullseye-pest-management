@@ -1,0 +1,64 @@
+---
+import { business, priceRange } from '../data/business';
+import { services } from '../data/services';
+import { serviceAreas } from '../data/service-areas';
+
+const schemaId = `${business.urls.canonical}/#localbusiness`;
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'PestControlService',
+  '@id': schemaId,
+  name: business.legalName,
+  alternateName: business.displayName,
+  slogan: business.tagline,
+  url: business.urls.canonical,
+  logo: `${business.urls.canonical}/images/logo.png`,
+  image: `${business.urls.canonical}/images/logo.png`,
+  telephone: business.phone.primaryTel,
+  email: business.email,
+  priceRange,
+  foundingDate: `${business.foundedYear}-01-01`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Dallas',
+    addressRegion: business.address.stateAbbr,
+    addressCountry: business.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: business.geo.latitude,
+    longitude: business.geo.longitude,
+  },
+  areaServed: serviceAreas.map(a => ({
+    '@type': 'City',
+    name: a.city,
+    containedInPlace: { '@type': 'State', name: 'Texas' },
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Pest Control Services',
+    itemListElement: services.map(s => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: s.title,
+        url: `${business.urls.canonical}/services/${s.slug}/`,
+      },
+    })),
+  },
+  openingHoursSpecification: business.hours.schema,
+  sameAs: [business.urls.facebook, business.urls.google],
+  hasCredential: business.certifications.map(c => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: c.name,
+  })),
+  founder: {
+    '@type': 'Person',
+    name: business.owner,
+    jobTitle: business.ownerTitle,
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />

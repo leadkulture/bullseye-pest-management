@@ -1,0 +1,39 @@
+---
+import type { Service } from '../data/services';
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<a
+  href={`/services/${service.slug}/`}
+  class="group block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-card hover:shadow-card-hover hover:border-brand-red/40 transition-all"
+>
+  <div class="aspect-[4/3] overflow-hidden bg-surface-muted">
+    <img
+      src={service.image}
+      alt={service.imageAlt}
+      width="600"
+      height="450"
+      loading="lazy"
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+  </div>
+  <div class="p-5">
+    <h3 class="text-lg font-display font-bold text-ink group-hover:text-brand-red transition-colors">
+      {service.title}
+    </h3>
+    <p class="mt-2 text-sm text-ink-soft leading-relaxed">
+      {service.shortDescription}
+    </p>
+    <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-red">
+      Learn more
+      <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 0 1 0-1.414L10.586 10 7.293 6.707a1 1 0 1 1 1.414-1.414l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414 0z" clip-rule="evenodd"/>
+      </svg>
+    </span>
+  </div>
+</a>

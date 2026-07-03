@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { business } from '../data/business';
+import { services } from '../data/services';
+import { serviceAreas } from '../data/service-areas';
+
+const title = `Contact Bullseye Pest Management | DFW Pest Control`;
+const description = `Call ${business.phone.primary} or send a message for a free DFW pest control inspection. Steve replies personally. ${business.hours.short}.`;
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: `Contact ${business.displayName}`,
+  url: `${business.urls.canonical}/contact/`,
+  mainEntity: { '@id': `${business.urls.canonical}/#localbusiness` },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/contact/"
+  extraSchema={contactSchema}
+>
+  <Breadcrumbs crumbs={[{ label: 'Contact', href: '/contact/' }]} />
+
+  <section class="max-w-container mx-auto px-4 pt-6 pb-4">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink">
+      Contact Bullseye Pest Management
+    </h1>
+    <p class="mt-3 text-lg text-ink-soft max-w-3xl">
+      Call, text, or send a message. Owner Steve Moseley replies personally, typically within one business hour during hours.
+    </p>
+  </section>
+
+  <section class="max-w-container mx-auto px-4 pb-16 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10">
+    <!-- Left: contact info + quick call block -->
+    <div class="space-y-6">
+      <div class="bg-brand-red text-white rounded-lg p-6 sm:p-8">
+        <p class="text-sm uppercase tracking-wide font-semibold text-white/80">Fastest response</p>
+        <a href={`tel:${business.phone.primaryTel}`} class="mt-2 block text-4xl sm:text-5xl font-display font-extrabold hover:text-white/90">
+          {business.phone.primary}
+        </a>
+        <p class="mt-3 text-white/90">
+          Local direct line. {business.hours.display}. After hours calls returned next business morning.
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row gap-3">
+          <a href={`tel:${business.phone.primaryTel}`} class="inline-flex items-center justify-center gap-2 bg-white text-brand-red font-semibold px-5 py-3 rounded-md min-h-[48px]">
+            Call Now
+          </a>
+          <a href={`sms:${business.phone.primaryTel}`} class="inline-flex items-center justify-center gap-2 bg-white/10 border-2 border-white/60 text-white font-semibold px-5 py-3 rounded-md min-h-[48px]">
+            Send Text
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <h2 class="text-xl font-display font-bold text-ink mb-4">Ways to Reach Us</h2>
+        <dl class="space-y-3 text-sm">
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">Local</dt>
+            <dd><a href={`tel:${business.phone.localTel}`} class="text-brand-red font-semibold hover:underline">{business.phone.local}</a></dd>
+          </div>
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">Toll Free</dt>
+            <dd><a href={`tel:${business.phone.tollFreeTel}`} class="text-brand-red font-semibold hover:underline">{business.phone.tollFree}</a></dd>
+          </div>
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">Email</dt>
+            <dd><a href={`mailto:${business.email}`} class="text-brand-red font-semibold hover:underline break-all">{business.email}</a></dd>
+          </div>
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">Hours</dt>
+            <dd class="text-ink-soft">{business.hours.display}</dd>
+          </div>
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">Area</dt>
+            <dd class="text-ink-soft">{business.address.region}</dd>
+          </div>
+          <div class="grid grid-cols-[100px_1fr] gap-3">
+            <dt class="text-ink-muted uppercase text-xs font-semibold pt-1">License</dt>
+            <dd class="text-ink-soft">{business.license}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="bg-surface-soft border border-gray-200 rounded-lg p-6">
+        <h2 class="text-xl font-display font-bold text-ink mb-4">Find Us Online</h2>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href={business.urls.facebook} target="_blank" rel="noopener" class="text-brand-red font-semibold hover:underline">
+              Facebook Page &rarr;
+            </a>
+          </li>
+          <li>
+            <a href={business.urls.google} target="_blank" rel="noopener" class="text-brand-red font-semibold hover:underline">
+              Google Business Profile &rarr;
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right: form -->
+    <div>
+      <div class="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-card">
+        <h2 class="text-2xl font-display font-bold text-ink">Request a Free Quote</h2>
+        <p class="mt-2 text-ink-soft text-sm">
+          Tell us what you are dealing with. We reply personally, usually within one business hour.
+        </p>
+
+        <!--
+          Contact form uses Web3Forms (https://web3forms.com) — a free, host-agnostic form endpoint
+          that works on Vercel/Netlify/anywhere. Steps for go-live:
+          1. Sign up at https://web3forms.com with steve@bullseyepestmanagement.com
+          2. Copy the access key
+          3. Replace WEB3FORMS_ACCESS_KEY below with the real key
+          4. Web3Forms will forward every submission to Steve's inbox
+          Alt: swap to Formspree/Basin/Vercel serverless function if preferred.
+        -->
+        <form
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          class="mt-6 space-y-4"
+        >
+          <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY" />
+          <input type="hidden" name="subject" value="New Bullseye Pest Management Website Lead" />
+          <input type="hidden" name="from_name" value="Bullseye Pest Management Website" />
+          <input type="hidden" name="redirect" value="https://bullseyepestmanagement.com/thank-you/" />
+          <!-- Honeypot -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="block">
+              <span class="block text-sm font-medium text-ink mb-1">Name <span class="text-brand-red">*</span></span>
+              <input type="text" name="name" required class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 min-h-[48px]" />
+            </label>
+            <label class="block">
+              <span class="block text-sm font-medium text-ink mb-1">Phone <span class="text-brand-red">*</span></span>
+              <input type="tel" name="phone" required inputmode="tel" autocomplete="tel" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 min-h-[48px]" />
+            </label>
+          </div>
+
+          <label class="block">
+            <span class="block text-sm font-medium text-ink mb-1">Email</span>
+            <input type="email" name="email" autocomplete="email" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 min-h-[48px]" />
+          </label>
+
+          <label class="block">
+            <span class="block text-sm font-medium text-ink mb-1">City</span>
+            <select name="city" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 min-h-[48px] bg-white">
+              <option value="">Choose your city</option>
+              {serviceAreas.map(a => <option value={a.city}>{a.city}</option>)}
+              <option value="Other DFW">Other DFW area</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="block text-sm font-medium text-ink mb-1">Service Needed</span>
+            <select name="service" class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 min-h-[48px] bg-white">
+              <option value="">Choose a service</option>
+              {services.map(s => <option value={s.title}>{s.title}</option>)}
+              <option value="Not Sure">Not sure — need help identifying</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="block text-sm font-medium text-ink mb-1">Tell Steve what is going on <span class="text-brand-red">*</span></span>
+            <textarea name="message" rows="5" required class="w-full px-4 py-3 rounded-md border border-gray-300 focus:border-brand-red focus:ring-2 focus:ring-brand-red/20"></textarea>
+          </label>
+
+          <p class="text-xs text-ink-muted">
+            By submitting this form you agree to be contacted by Bullseye Pest Management about your service request. We never share your info.
+          </p>
+
+          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-6 py-4 rounded-md text-lg min-h-[52px] shadow-md">
+            Send Request
+          </button>
+
+          <p class="text-xs text-ink-muted text-center">
+            Prefer to talk now? Call <a href={`tel:${business.phone.primaryTel}`} class="text-brand-red font-semibold underline">{business.phone.primary}</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

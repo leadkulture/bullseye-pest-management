@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTABand from '../../components/CTABand.astro';
+import { posts } from '../../data/posts';
+import { business } from '../../data/business';
+
+const title = 'Bullseye Pest Blog | DFW Pest Control Tips & Guides';
+const description = 'Expert pest control, termite, bee removal, and wildlife guides for DFW homeowners from a certified applicator with 25+ years of local experience.';
+
+const sortedPosts = [...posts].sort((a, b) => b.publishedISO.localeCompare(a.publishedISO));
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/blog/">
+  <Breadcrumbs crumbs={[{ label: 'Blog', href: '/blog/' }]} />
+
+  <section class="max-w-container mx-auto px-4 pt-6 pb-8">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink">
+      Bullseye Pest Blog
+    </h1>
+    <p class="mt-4 text-lg text-ink-soft max-w-3xl">
+      Practical DFW pest control guides written by owner {business.owner}. What to look for, when to call, and what things actually cost.
+    </p>
+  </section>
+
+  <section class="max-w-container mx-auto px-4 pb-14">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sortedPosts.map(post => (
+        <a href={`/blog/${post.slug}/`} class="group block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-card-hover hover:border-brand-red/40 transition-all">
+          <div class="aspect-[16/9] overflow-hidden bg-surface-muted">
+            <img
+              src={post.heroImage}
+              alt={post.heroImageAlt}
+              width="600"
+              height="338"
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div class="p-5">
+            <p class="text-xs uppercase tracking-wide text-brand-red font-semibold">{post.category}</p>
+            <h2 class="mt-1 text-lg font-display font-bold text-ink group-hover:text-brand-red">
+              {post.title}
+            </h2>
+            <p class="mt-2 text-sm text-ink-soft leading-relaxed">{post.excerpt}</p>
+            <p class="mt-3 text-xs text-ink-muted">Updated {new Date(post.updatedISO).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>

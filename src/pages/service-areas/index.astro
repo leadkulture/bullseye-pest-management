@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTABand from '../../components/CTABand.astro';
+import { serviceAreas } from '../../data/service-areas';
+import { business } from '../../data/business';
+
+const title = 'DFW Service Areas | Bullseye Pest Management';
+const description = 'Bullseye Pest Management serves Dallas, Fort Worth, Arlington, Mansfield, Plano, and the surrounding DFW metroplex since 1999.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/service-areas/">
+  <Breadcrumbs crumbs={[{ label: 'Service Areas', href: '/service-areas/' }]} />
+
+  <section class="max-w-container mx-auto px-4 pt-6 pb-10">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink">
+      DFW Service Areas
+    </h1>
+    <p class="mt-4 text-lg text-ink-soft max-w-3xl">
+      Bullseye Pest Management serves the entire Dallas–Fort Worth metroplex from a single-owner-operator model. Steve personally treats homes and businesses across all five primary service areas below, plus every suburb and enclave in between.
+    </p>
+  </section>
+
+  <section class="max-w-container mx-auto px-4 pb-14">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {serviceAreas.map(a => (
+        <a href={`/service-areas/${a.slug}/`} class="group bg-white border border-gray-200 rounded-lg p-6 hover:border-brand-red hover:shadow-card transition-all">
+          <p class="text-xs uppercase tracking-wide text-brand-red font-semibold">Pest Control</p>
+          <h2 class="mt-1 text-2xl font-display font-bold text-ink group-hover:text-brand-red">
+            {a.city}, {a.state}
+          </h2>
+          <p class="mt-3 text-sm text-ink-soft leading-relaxed">
+            {a.hero.sub}
+          </p>
+          <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-red">
+            View {a.city} details &rarr;
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-10 bg-surface-soft border border-gray-200 rounded-lg p-6">
+      <h2 class="text-xl font-display font-bold text-ink mb-2">Do you serve my city?</h2>
+      <p class="text-ink-soft">
+        We also serve Frisco, Grand Prairie, Irving, Grapevine, Southlake, Colleyville, Bedford, Hurst, Euless, North Richland Hills, Keller, Cedar Hill, DeSoto, Duncanville, Rockwall, Wylie, Garland, and more. Call <a href={`tel:${business.phone.primaryTel}`} class="text-brand-red font-semibold underline">{business.phone.primary}</a> with your address to confirm coverage.
+      </p>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>

@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TrustBadges from '../components/TrustBadges.astro';
+import CTABand from '../components/CTABand.astro';
+import { business } from '../data/business';
+
+const title = `About ${business.owner} & Bullseye Pest Management | DFW`;
+const description = `Meet Steve Moseley, owner and certified applicator at Bullseye Pest Management. Serving DFW since ${business.foundedYear}. License ${business.license}.`;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: business.owner,
+  jobTitle: business.ownerTitle,
+  worksFor: { '@id': `${business.urls.canonical}/#localbusiness` },
+  hasCredential: business.certifications.map(c => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: c.name,
+  })),
+};
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `About ${business.displayName}`,
+  url: `${business.urls.canonical}/about/`,
+  mainEntity: { '@id': `${business.urls.canonical}/#localbusiness` },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/about/"
+  extraSchema={[personSchema, aboutSchema]}
+>
+  <Breadcrumbs crumbs={[{ label: 'About', href: '/about/' }]} />
+
+  <section class="max-w-container mx-auto px-4 pt-6 pb-12">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink">
+      About Bullseye Pest Management
+    </h1>
+    <p class="mt-3 text-lg text-ink-soft italic">{business.tagline}. License {business.license}.</p>
+  </section>
+
+  <section class="max-w-container mx-auto px-4 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-10 pb-16">
+    <div>
+      <img
+        src="/images/team/steve-inspection.jpeg"
+        alt={`${business.owner}, ${business.ownerTitle} at Bullseye Pest Management`}
+        width="800"
+        height="1000"
+        loading="eager"
+        class="rounded-lg shadow-card w-full h-auto"
+      />
+      <div class="mt-4 bg-surface-soft rounded-lg p-5">
+        <p class="text-sm text-ink-muted">Owner &amp; Certified Applicator</p>
+        <p class="text-lg font-semibold text-ink">{business.owner}</p>
+        <p class="mt-2 text-sm text-ink-soft">Licensed by the Texas Department of Agriculture in Pest, Termite, Lawn, Ornamental, and Weed applications.</p>
+      </div>
+    </div>
+
+    <div class="prose-content">
+      <h2>Meet Steve Moseley</h2>
+      <p>
+        Since 1999, Steve Moseley has been the certified applicator behind every Bullseye Pest Management job. That is unusual in this industry. Most pest control companies hire out application work to rotating techs who spend a few weeks on the job and then move on. Steve has spent twenty-five years walking DFW properties personally, treating them personally, and coming back the next quarter to make sure the work held.
+      </p>
+      <p>
+        Steve is licensed by the Texas Department of Agriculture in five separate categories: <strong>Pest, Termite, Lawn, Ornamental, and Weed</strong>. That means one call covers every pest and lawn issue on your property, not five different specialists with five different bills. It also means whoever shows up at your door has direct accountability for the outcome.
+      </p>
+
+      <h2>What Bullseye Pest Management Does Differently</h2>
+      <p>
+        <strong>The owner does the work.</strong> Steve inspects, treats, and follows up. No rotating techs, no upsells from a commission-driven salesperson, no bait-and-switch pricing.
+      </p>
+      <p>
+        <strong>Integrated Pest Management (IPM) is the default.</strong> That means we combine biological, cultural, physical, and chemical tools to solve the problem with the smallest possible impact on your family, your pets, and the environment. Sometimes the fix is a chemical treatment. Sometimes the fix is sealing a foundation gap or trimming a tree branch. Steve will tell you honestly which.
+      </p>
+      <p>
+        <strong>No contracts.</strong> Quarterly customers stay because the program works, not because they are locked in.
+      </p>
+      <p>
+        <strong>Free inspections and written estimates.</strong> Every job is quoted after Steve looks at your property. No phone quotes. No hidden fees.
+      </p>
+
+      <h2>Certifications and Credentials</h2>
+      <ul>
+        <li><strong>Texas Department of Agriculture</strong> Certified Applicator in Pest, Termite, Lawn, Ornamental, and Weed (License {business.license}).</li>
+        <li><strong>Termidor Certified Professional</strong> — required to register a home for the Termidor Ten-Year Pledge.</li>
+        <li><strong>Phantom Termite Control Certified.</strong></li>
+        <li><strong>Texas Pest Control Association (TPCA)</strong> member.</li>
+        <li><strong>National Pest Management Association (NPMA)</strong> member.</li>
+        <li><strong>Soil testing</strong> through a 75-year certified lab for lawn fertilization programs.</li>
+        <li><strong>Fully licensed and insured</strong> for both residential and commercial work across Texas.</li>
+      </ul>
+
+      <h2>Who We Serve</h2>
+      <p>
+        Bullseye Pest Management serves both <strong>residential</strong> and <strong>commercial</strong> clients across the Dallas–Fort Worth metroplex. Residential clients range from historic bungalows in East Dallas to new construction in Mansfield and Plano. Commercial clients include offices, retail spaces, restaurants, hotels, short-term rentals, and rental property portfolios.
+      </p>
+      <p>
+        We can handle:
+      </p>
+      <ul>
+        <li>General pest control (ants, roaches, spiders, silverfish, and more)</li>
+        <li>Pre-construction and post-construction termite treatments</li>
+        <li>Bed bug elimination</li>
+        <li>Bee and honeycomb removal, including utility pole work</li>
+        <li>Rodent control and exclusion work</li>
+        <li>Wildlife trapping (armadillos, raccoons, opossums, skunks, snakes, squirrels)</li>
+        <li>Lawn fertilization with soil testing and weed control</li>
+        <li>Wood Destroying Insect (WDI) reports for real estate transactions</li>
+      </ul>
+
+      <h2>Our Approach: Integrated Pest Management</h2>
+      <p>
+        Killing the visible bugs is the easy part. Keeping them from coming back is the harder part, and it is where most pest control programs fall short. At Bullseye Pest Management we assess the conditions that attract pests in the first place — moisture, entry points, food sources, sanitation, structural gaps — and recommend fixes alongside the treatment. Sometimes the treatment alone is enough. Sometimes trimming foliage away from the foundation is what actually solves it. Steve will walk you through what he is seeing and give you an honest recommendation.
+      </p>
+    </div>
+  </section>
+
+  <TrustBadges variant="dark" />
+
+  <CTABand
+    headline="Talk to Steve directly."
+    sub={`Call ${business.phone.primary}. No phone menus, no sales team, just Steve.`}
+    variant="green"
+  />
+</BaseLayout>

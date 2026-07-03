@@ -1,0 +1,135 @@
+---
+import { business, primaryCTA } from '../data/business';
+import { services } from '../data/services';
+import { serviceAreas } from '../data/service-areas';
+
+const nav = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services/', children: services.map(s => ({ label: s.navTitle, href: `/services/${s.slug}/` })) },
+  { label: 'Service Areas', href: '/service-areas/', children: serviceAreas.map(a => ({ label: a.city, href: `/service-areas/${a.slug}/` })) },
+  { label: 'About', href: '/about/' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'Contact', href: '/contact/' },
+];
+---
+
+<header class="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
+  <!-- Top strip: hours + phone -->
+  <div class="bg-brand-green text-white text-xs sm:text-sm">
+    <div class="max-w-container mx-auto px-4 py-1.5 flex items-center justify-between gap-3">
+      <span class="hidden sm:inline">{business.hours.short} &middot; {business.address.region}</span>
+      <span class="sm:hidden font-medium">{business.hours.short}</span>
+      <a href={primaryCTA.href} class="font-semibold hover:underline flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2A1.5 1.5 0 0 1 7 3.5v2A1.5 1.5 0 0 1 5.5 7h-.379a11.5 11.5 0 0 0 7.879 7.879V14.5A1.5 1.5 0 0 1 14.5 13h2A1.5 1.5 0 0 1 18 14.5v2A1.5 1.5 0 0 1 16.5 18h-1C7.492 18 2 12.508 2 4.5v-1z"/>
+        </svg>
+        {business.phone.primary}
+      </a>
+    </div>
+  </div>
+
+  <!-- Main nav -->
+  <div class="max-w-container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label={`${business.displayName} home`}>
+      <img
+        src="/images/logo.png"
+        alt={`${business.displayName} logo — Right On Target, ${business.phone.tollFree}`}
+        width="220"
+        height="86"
+        class="h-12 sm:h-14 w-auto"
+        fetchpriority="high"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav aria-label="Main" class="hidden lg:flex items-center gap-1">
+      {nav.map(item => (
+        <div class="relative group">
+          <a
+            href={item.href}
+            class="px-3 py-2 text-sm font-medium text-ink hover:text-brand-red transition-colors flex items-center gap-1"
+          >
+            {item.label}
+            {item.children && (
+              <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.06l3.71-3.83a.75.75 0 0 1 1.08 1.04l-4.25 4.4a.75.75 0 0 1-1.08 0l-4.25-4.4a.75.75 0 0 1 .02-1.06z" clip-rule="evenodd"/>
+              </svg>
+            )}
+          </a>
+          {item.children && (
+            <div class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 min-w-[260px]">
+              <div class="bg-white border border-gray-100 rounded-lg shadow-card-hover py-2">
+                {item.children.map(child => (
+                  <a href={child.href} class="block px-4 py-2 text-sm text-ink hover:bg-surface-soft hover:text-brand-red">
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </nav>
+
+    <a href={primaryCTA.href} class="hidden md:inline-flex items-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-4 py-2.5 rounded-md transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2A1.5 1.5 0 0 1 7 3.5v2A1.5 1.5 0 0 1 5.5 7h-.379a11.5 11.5 0 0 0 7.879 7.879V14.5A1.5 1.5 0 0 1 14.5 13h2A1.5 1.5 0 0 1 18 14.5v2A1.5 1.5 0 0 1 16.5 18h-1C7.492 18 2 12.508 2 4.5v-1z"/>
+      </svg>
+      {business.phone.primary}
+    </a>
+
+    <!-- Mobile menu toggle -->
+    <button
+      id="mobile-menu-toggle"
+      type="button"
+      class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md border border-gray-200 text-ink"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="4" y1="6" x2="20" y2="6"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="18" x2="20" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu drawer -->
+  <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-100 bg-white">
+    <nav aria-label="Mobile" class="px-4 py-3 space-y-1">
+      {nav.map(item => (
+        <>
+          <a href={item.href} class="block px-3 py-3 text-base font-medium text-ink hover:bg-surface-soft rounded-md">
+            {item.label}
+          </a>
+          {item.children && (
+            <div class="pl-4 border-l-2 border-brand-red/20 ml-3 mb-2">
+              {item.children.map(child => (
+                <a href={child.href} class="block px-3 py-2 text-sm text-ink-soft hover:text-brand-red">
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </>
+      ))}
+      <a href={primaryCTA.href} class="mt-3 flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-4 py-3 rounded-md min-h-[48px]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2A1.5 1.5 0 0 1 7 3.5v2A1.5 1.5 0 0 1 5.5 7h-.379a11.5 11.5 0 0 0 7.879 7.879V14.5A1.5 1.5 0 0 1 14.5 13h2A1.5 1.5 0 0 1 18 14.5v2A1.5 1.5 0 0 1 16.5 18h-1C7.492 18 2 12.508 2 4.5v-1z"/>
+        </svg>
+        Call {business.phone.primary}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(open === false));
+    toggle.setAttribute('aria-label', open === false ? 'Close menu' : 'Open menu');
+  });
+</script>

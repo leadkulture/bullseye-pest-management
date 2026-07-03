@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { services } from '../data/services';
+---
+
+<BaseLayout title="Page Not Found | Bullseye Pest Management" description="The page you're looking for could not be found." canonicalPath="/404/" noindex={true}>
+  <section class="max-w-container mx-auto px-4 py-20 text-center">
+    <p class="text-brand-red text-6xl font-display font-extrabold">404</p>
+    <h1 class="mt-4 text-3xl sm:text-4xl font-display font-extrabold text-ink">Page Not Found</h1>
+    <p class="mt-4 text-lg text-ink-soft max-w-xl mx-auto">
+      The page you tried to reach does not exist. Try one of these instead.
+    </p>
+    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+      <a href="/" class="inline-flex items-center justify-center bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-6 py-3 rounded-md min-h-[48px]">Home</a>
+      <a href="/services/" class="inline-flex items-center justify-center border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white font-semibold px-6 py-3 rounded-md min-h-[48px]">All Services</a>
+      <a href="/contact/" class="inline-flex items-center justify-center border-2 border-brand-red text-brand-red hover:bg-brand-red hover:text-white font-semibold px-6 py-3 rounded-md min-h-[48px]">Contact</a>
+    </div>
+    <div class="mt-12 max-w-3xl mx-auto text-left">
+      <h2 class="text-xl font-display font-bold text-ink mb-4">Popular Services</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {services.slice(0, 6).map(s => (
+          <a href={`/services/${s.slug}/`} class="block bg-surface-soft border border-gray-200 rounded p-3 hover:border-brand-red">
+            <span class="font-semibold text-ink">{s.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

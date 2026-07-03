@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Baseline */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* Prose defaults for long-form content */
+.prose-content h2 {
+  @apply text-2xl sm:text-3xl font-display font-bold text-ink mt-10 mb-4;
+}
+.prose-content h3 {
+  @apply text-xl font-display font-semibold text-ink mt-6 mb-3;
+}
+.prose-content p {
+  @apply text-base text-ink-soft leading-relaxed my-4;
+}
+.prose-content ul {
+  @apply list-disc pl-6 my-4 space-y-2 text-ink-soft;
+}
+.prose-content ol {
+  @apply list-decimal pl-6 my-4 space-y-2 text-ink-soft;
+}
+.prose-content a {
+  @apply text-brand-red font-medium underline underline-offset-2 hover:text-brand-red-dark;
+}
+.prose-content strong {
+  @apply font-semibold text-ink;
+}
+
+/* Tap targets: enforce 44px minimum on all interactive elements */
+@media (max-width: 767px) {
+  button, a[role="button"], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+  }
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid theme('colors.brand.red');
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

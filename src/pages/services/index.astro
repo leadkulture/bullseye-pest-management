@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTABand from '../../components/CTABand.astro';
+import TrustBadges from '../../components/TrustBadges.astro';
+import { services } from '../../data/services';
+import { business } from '../../data/business';
+
+const title = 'Pest Control Services in DFW | Bullseye Pest Management';
+const description = 'Full-service DFW pest control: general pest, termite, bed bugs, bees, rodents, wildlife, lawn fertilization, and WDI reports. Certified applicator.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/services/">
+  <Breadcrumbs crumbs={[{ label: 'Services', href: '/services/' }]} />
+
+  <section class="max-w-container mx-auto px-4 pt-6 pb-10">
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink">
+      Our Services
+    </h1>
+    <p class="mt-4 text-lg text-ink-soft max-w-3xl">
+      Every service on this page is performed by owner {business.owner}, a Texas Department of Agriculture Certified Applicator with 25+ years of DFW experience. One certified applicator, five license categories, every job.
+    </p>
+  </section>
+
+  <section class="max-w-container mx-auto px-4 pb-14">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map(s => <ServiceCard service={s} />)}
+    </div>
+  </section>
+
+  <TrustBadges variant="light" />
+
+  <CTABand />
+</BaseLayout>

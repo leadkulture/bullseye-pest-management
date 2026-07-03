@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTABand from '../../components/CTABand.astro';
+import { posts } from '../../data/posts';
+import { services } from '../../data/services';
+import { business } from '../../data/business';
+
+export async function getStaticPaths() {
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const relatedService = post.relatedServiceSlug ? services.find(s => s.slug === post.relatedServiceSlug) : null;
+const otherPosts = posts.filter(p => p.slug !== post.slug).slice(0, 3);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.metaDescription,
+  image: `${business.urls.canonical}${post.heroImage}`,
+  datePublished: post.publishedISO,
+  dateModified: post.updatedISO,
+  author: {
+    '@type': 'Person',
+    name: business.owner,
+    jobTitle: business.ownerTitle,
+    url: `${business.urls.canonical}/about/`,
+    worksFor: { '@id': `${business.urls.canonical}/#localbusiness` },
+  },
+  publisher: { '@id': `${business.urls.canonical}/#localbusiness` },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${business.urls.canonical}/blog/${post.slug}/`,
+  },
+};
+---
+
+<BaseLayout
+  title={post.metaTitle}
+  description={post.metaDescription}
+  canonicalPath={`/blog/${post.slug}/`}
+  ogImage={post.heroImage}
+  preloadHeroImage={post.heroImage}
+  extraSchema={articleSchema}
+>
+  <Breadcrumbs crumbs={[
+    { label: 'Blog', href: '/blog/' },
+    { label: post.category, href: '/blog/' },
+    { label: post.title, href: `/blog/${post.slug}/` },
+  ]} />
+
+  <article class="max-w-container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+      <p class="text-xs uppercase tracking-wide text-brand-red font-semibold">{post.category}</p>
+      <h1 class="mt-2 text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-ink leading-tight">
+        {post.title}
+      </h1>
+      <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-muted">
+        <span>By <strong class="text-ink">{business.owner}</strong>, {business.ownerTitle}</span>
+        <span>&middot;</span>
+        <span>Updated {new Date(post.updatedISO).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+      </div>
+    </div>
+
+    <div class="mt-8 max-w-4xl mx-auto">
+      <img
+        src={post.heroImage}
+        alt={post.heroImageAlt}
+        width="1200"
+        height="675"
+        fetchpriority="high"
+        class="w-full h-auto rounded-lg shadow-card"
+      />
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-8">
+      <!-- AEO opener: direct 40-60 word answer at the top for AI Overview extraction -->
+      <div class="bg-surface-soft border-l-4 border-brand-red p-5 rounded">
+        <p class="text-lg text-ink leading-relaxed font-medium">{post.opener}</p>
+      </div>
+
+      <div class="prose-content mt-6" set:html={post.bodyHtml} />
+
+      <!-- Author card -->
+      <div class="mt-10 bg-white border border-gray-200 rounded-lg p-6 flex flex-col sm:flex-row gap-5 items-center">
+        <img
+          src="/images/team/steve-inspection.jpeg"
+          alt={`${business.owner}, ${business.ownerTitle}`}
+          width="160"
+          height="160"
+          loading="lazy"
+          class="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover flex-shrink-0"
+        />
+        <div>
+          <p class="text-sm text-ink-muted">Author</p>
+          <p class="text-lg font-display font-bold text-ink">{business.owner}</p>
+          <p class="text-sm text-ink-soft">
+            {business.ownerTitle} at Bullseye Pest Management. Licensed by the Texas Department of Agriculture in Pest, Termite, Lawn, Ornamental, and Weed (License {business.license}). Serving DFW since {business.foundedYear}.
+          </p>
+          <a href="/about/" class="mt-2 inline-block text-brand-red font-semibold hover:underline text-sm">Read Steve&rsquo;s full story &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  {relatedService && (
+    <section class="max-w-container mx-auto px-4 pb-12">
+      <div class="max-w-3xl mx-auto bg-ink text-white rounded-lg p-6 sm:p-8">
+        <p class="text-sm uppercase tracking-wide text-brand-red-light font-semibold">Related Service</p>
+        <h2 class="mt-1 text-2xl font-display font-bold">{relatedService.title}</h2>
+        <p class="mt-2 text-white/90">{relatedService.shortDescription}</p>
+        <a href={`/services/${relatedService.slug}/`} class="mt-4 inline-flex items-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-5 py-3 rounded-md min-h-[48px]">
+          View {relatedService.navTitle} details &rarr;
+        </a>
+      </div>
+    </section>
+  )}
+
+  <CTABand />
+
+  <section class="max-w-container mx-auto px-4 pb-16">
+    <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-6">Keep Reading</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {otherPosts.map(p => (
+        <a href={`/blog/${p.slug}/`} class="group block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-card-hover transition-all">
+          <div class="aspect-[16/9] overflow-hidden bg-surface-muted">
+            <img src={p.heroImage} alt={p.heroImageAlt} width="600" height="338" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div class="p-4">
+            <p class="text-xs uppercase tracking-wide text-brand-red font-semibold">{p.category}</p>
+            <h3 class="mt-1 text-base font-display font-bold text-ink group-hover:text-brand-red">{p.title}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

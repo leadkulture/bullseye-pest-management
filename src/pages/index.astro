@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { business, primaryCTA } from '../data/business';
+import { services } from '../data/services';
+import { serviceAreas } from '../data/service-areas';
+import ServiceCard from '../components/ServiceCard.astro';
+import TrustBadges from '../components/TrustBadges.astro';
+import CTABand from '../components/CTABand.astro';
+import FAQBlock from '../components/FAQBlock.astro';
+
+const title = 'Pest Control in Dallas–Fort Worth TX | Bullseye Pest Management';
+const description =
+  'Certified DFW pest control since 1999. Termites, bed bugs, bees, rodents, wildlife, and lawn care. Quarterly programs from $75. Call 682-472-4435.';
+
+const homeFaqs = [
+  {
+    q: 'How much does pest control cost in the DFW area?',
+    a: 'Quarterly perimeter pest control treatments with Bullseye Pest Management start at $75 per treatment for standard single-family homes. Termite treatments, bed bugs, bee removal, and wildlife trapping are quoted individually after a free in-person inspection.',
+  },
+  {
+    q: 'Do you require a contract?',
+    a: 'No. Bullseye Pest Management does not require contracts for any service. Most customers stay on the quarterly schedule because it works, not because they are locked in.',
+  },
+  {
+    q: 'Are your treatments safe for kids and pets?',
+    a: 'Yes when used as directed. Owner Steve Moseley is a certified applicator licensed by the Texas Department of Agriculture. We select products and application methods with kids and pets in mind, and Steve will review any product label with you before treatment.',
+  },
+  {
+    q: 'What areas do you serve in the DFW metroplex?',
+    a: 'Dallas, Fort Worth, Arlington, Mansfield, Plano, and surrounding suburbs across the Dallas–Fort Worth metroplex. See our service areas page for the full list.',
+  },
+  {
+    q: 'How quickly can you get out to my property?',
+    a: 'Scheduled work is typically booked within 2 to 5 business days. Urgent issues (active bee swarms, heavy pest activity, wildlife in a structure) are handled same-day or next-day when possible.',
+  },
+  {
+    q: 'Do you handle commercial properties?',
+    a: 'Yes. We serve both residential and commercial clients across DFW including offices, retail spaces, restaurants, rental properties, hotels, and short-term rentals.',
+  },
+];
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: business.displayName,
+  url: business.urls.canonical,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${business.urls.canonical}/?s={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath="/"
+  preloadHeroImage="/images/services/pest-control.png"
+  extraSchema={websiteSchema}
+>
+  <!-- Hero -->
+  <section class="relative bg-gradient-to-br from-brand-green via-brand-green-dark to-ink text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10" aria-hidden="true">
+      <img src="/images/services/pest-control.png" alt="" class="w-full h-full object-cover" fetchpriority="high" width="1600" height="900" />
+    </div>
+    <div class="relative max-w-container mx-auto px-4 py-14 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
+      <div>
+        <p class="inline-block bg-brand-red text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded mb-4">
+          Right On Target Since 1999
+        </p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold leading-tight">
+          DFW Pest Control<br />by a Certified Applicator
+        </h1>
+        <p class="mt-5 text-lg sm:text-xl text-white/90 max-w-xl">
+          Owner Steve Moseley personally inspects and treats every property. Quarterly perimeter programs from $75. Termite, bed bug, bee, wildlife, and lawn services. No contracts, no runaround.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a href={primaryCTA.href} class="inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-6 py-4 rounded-md min-h-[52px] text-lg shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2A1.5 1.5 0 0 1 7 3.5v2A1.5 1.5 0 0 1 5.5 7h-.379a11.5 11.5 0 0 0 7.879 7.879V14.5A1.5 1.5 0 0 1 14.5 13h2A1.5 1.5 0 0 1 18 14.5v2A1.5 1.5 0 0 1 16.5 18h-1C7.492 18 2 12.508 2 4.5v-1z"/>
+            </svg>
+            Call {business.phone.primary}
+          </a>
+          <a href="/contact/" class="inline-flex items-center justify-center gap-2 bg-white/10 border-2 border-white/60 hover:bg-white/20 text-white font-semibold px-6 py-4 rounded-md min-h-[52px] text-lg">
+            Get a Free Quote
+          </a>
+        </div>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/80">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-brand-red-light" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/></svg>
+            License {business.license}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-brand-red-light" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Termidor Certified
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-brand-red-light" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.707-9.293a1 1 0 0 0-1.414-1.414L9 10.586 7.707 9.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4z" clip-rule="evenodd"/></svg>
+            No Contracts Required
+          </span>
+        </div>
+      </div>
+      <div class="hidden lg:block">
+        <div class="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-6">
+          <p class="text-sm uppercase tracking-wide text-brand-red-light font-semibold mb-2">Free Inspection Includes</p>
+          <ul class="space-y-3 text-white">
+            <li class="flex gap-3"><span class="text-brand-red-light font-bold">&check;</span> Full property walk-through</li>
+            <li class="flex gap-3"><span class="text-brand-red-light font-bold">&check;</span> Pest identification</li>
+            <li class="flex gap-3"><span class="text-brand-red-light font-bold">&check;</span> Root-cause diagnosis (moisture, entry points, food sources)</li>
+            <li class="flex gap-3"><span class="text-brand-red-light font-bold">&check;</span> Written estimate up front, no surprises</li>
+            <li class="flex gap-3"><span class="text-brand-red-light font-bold">&check;</span> Plain-English answers to your questions</li>
+          </ul>
+          <a href="/contact/" class="mt-5 block text-center bg-brand-red hover:bg-brand-red-dark text-white font-semibold py-3 rounded-md">
+            Schedule Free Inspection
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="max-w-container mx-auto px-4 py-12 sm:py-16">
+    <div class="text-center mb-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand-red">What We Do</p>
+      <h2 class="mt-1 text-3xl sm:text-4xl font-display font-bold text-ink">
+        Full-Service Pest Management for DFW
+      </h2>
+      <p class="mt-3 text-ink-soft max-w-2xl mx-auto">
+        Residential and commercial. Termites to bed bugs, bees to lawn care. One certified applicator, one direct line.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map(s => <ServiceCard service={s} />)}
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section class="bg-surface-soft">
+    <div class="max-w-container mx-auto px-4 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <img
+          src="/images/team/steve-inspection.jpeg"
+          alt={`${business.owner}, ${business.ownerTitle}, on a DFW pest control inspection`}
+          width="800"
+          height="600"
+          loading="lazy"
+          class="rounded-lg shadow-card w-full h-auto"
+        />
+      </div>
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-brand-red">Why DFW Homeowners Choose Us</p>
+        <h2 class="mt-1 text-3xl sm:text-4xl font-display font-bold text-ink">
+          One certified applicator. Every job. Since 1999.
+        </h2>
+        <p class="mt-4 text-ink-soft">
+          Most pest control companies rotate techs through your property. With Bullseye Pest Management, owner {business.owner} is the one who inspects, treats, and follows up. That means one person who knows your property, one accountable set of eyes on the work, and honest recommendations without upsells.
+        </p>
+        <ul class="mt-6 space-y-3">
+          <li class="flex gap-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center text-sm font-bold">&check;</span>
+            <span class="text-ink-soft"><strong class="text-ink">25+ years serving the DFW metroplex.</strong> Steve has treated everything from historic East Dallas bungalows to new Mansfield construction.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center text-sm font-bold">&check;</span>
+            <span class="text-ink-soft"><strong class="text-ink">Termidor Certified Professional.</strong> Qualifying homes get the Termidor Ten-Year Pledge: no termites, no callbacks, no excuses for 10 years.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center text-sm font-bold">&check;</span>
+            <span class="text-ink-soft"><strong class="text-ink">No contracts. Ever.</strong> Quarterly customers stay because the program works, not because they are locked in.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center text-sm font-bold">&check;</span>
+            <span class="text-ink-soft"><strong class="text-ink">Free inspections and written estimates.</strong> Every job quoted after we look at your property. No phone quotes, no surprises.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-brand-red text-white rounded-full flex items-center justify-center text-sm font-bold">&check;</span>
+            <span class="text-ink-soft"><strong class="text-ink">Fully licensed &amp; insured.</strong> License {business.license}, TPCA and NPMA member.</span>
+          </li>
+        </ul>
+        <a href="/about/" class="mt-6 inline-flex items-center gap-1 text-brand-red font-semibold hover:text-brand-red-dark">
+          Read Steve&rsquo;s story
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 0 1 0-1.414L10.586 10 7.293 6.707a1 1 0 1 1 1.414-1.414l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414 0z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <TrustBadges variant="light" />
+
+  <!-- Service areas -->
+  <section class="max-w-container mx-auto px-4 py-12 sm:py-16">
+    <div class="text-center mb-10">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand-red">Serving the DFW Metroplex</p>
+      <h2 class="mt-1 text-3xl sm:text-4xl font-display font-bold text-ink">
+        Where we work
+      </h2>
+      <p class="mt-3 text-ink-soft max-w-2xl mx-auto">
+        Dallas, Fort Worth, Arlington, Mansfield, Plano, and every suburb in between. If you are in the metroplex, we can help.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      {serviceAreas.map(a => (
+        <a href={`/service-areas/${a.slug}/`} class="group bg-white border border-gray-200 rounded-lg p-5 text-center hover:border-brand-red hover:shadow-card transition-all">
+          <p class="text-xs uppercase tracking-wide text-brand-red font-semibold">Pest Control in</p>
+          <p class="mt-1 text-lg font-display font-bold text-ink group-hover:text-brand-red">{a.city}, {a.state}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CTABand
+    headline="Get a free inspection, no strings attached."
+    sub={`Call ${business.phone.primary} or send us a message. Steve gets back to you personally.`}
+  />
+
+  <FAQBlock faqs={homeFaqs} />
+</BaseLayout>

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/about-us", "destination": "/about/", "permanent": true },
+    { "source": "/about-us/", "destination": "/about/", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact/", "permanent": true },
+    { "source": "/contact-us/", "destination": "/contact/", "permanent": true },
+    { "source": "/our-blog", "destination": "/blog/", "permanent": true },
+    { "source": "/our-blog/", "destination": "/blog/", "permanent": true },
+    { "source": "/animal-trapping-wildlife-removal", "destination": "/services/animal-trapping/", "permanent": true },
+    { "source": "/animal-trapping-wildlife-removal/", "destination": "/services/animal-trapping/", "permanent": true },
+    { "source": "/bee-removal", "destination": "/services/bee-removal/", "permanent": true },
+    { "source": "/bee-removal/", "destination": "/services/bee-removal/", "permanent": true },
+    { "source": "/bed-bugs", "destination": "/services/bed-bug-treatment/", "permanent": true },
+    { "source": "/bed-bugs/", "destination": "/services/bed-bug-treatment/", "permanent": true },
+    { "source": "/lawn-fertilization", "destination": "/services/lawn-fertilization/", "permanent": true },
+    { "source": "/lawn-fertilization/", "destination": "/services/lawn-fertilization/", "permanent": true },
+    { "source": "/pest-control", "destination": "/services/pest-control/", "permanent": true },
+    { "source": "/pest-control/", "destination": "/services/pest-control/", "permanent": true },
+    { "source": "/rodent-control", "destination": "/services/rodent-control/", "permanent": true },
+    { "source": "/rodent-control/", "destination": "/services/rodent-control/", "permanent": true },
+    { "source": "/termite-treatments", "destination": "/services/termite-treatment/", "permanent": true },
+    { "source": "/termite-treatments/", "destination": "/services/termite-treatment/", "permanent": true },
+    { "source": "/weed-control", "destination": "/services/weed-control/", "permanent": true },
+    { "source": "/weed-control/", "destination": "/services/weed-control/", "permanent": true },
+    { "source": "/wood-destroying-insect-wdi-reports", "destination": "/services/wdi-reports/", "permanent": true },
+    { "source": "/wood-destroying-insect-wdi-reports/", "destination": "/services/wdi-reports/", "permanent": true },
+    { "source": "/our-service-area", "destination": "/service-areas/", "permanent": true },
+    { "source": "/our-service-area/", "destination": "/service-areas/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

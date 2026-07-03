@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQBlock from '../../components/FAQBlock.astro';
+import CTABand from '../../components/CTABand.astro';
+import TrustBadges from '../../components/TrustBadges.astro';
+import { services } from '../../data/services';
+import { serviceAreas } from '../../data/service-areas';
+import { business, primaryCTA } from '../../data/business';
+
+export async function getStaticPaths() {
+  return services.map(service => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.title,
+  serviceType: service.serviceType,
+  description: service.shortDescription,
+  provider: { '@id': `${business.urls.canonical}/#localbusiness` },
+  areaServed: serviceAreas.map(a => ({
+    '@type': 'City',
+    name: a.city,
+    containedInPlace: { '@type': 'State', name: 'Texas' },
+  })),
+  url: `${business.urls.canonical}/services/${service.slug}/`,
+  offers: {
+    '@type': 'Offer',
+    availability: 'https://schema.org/InStock',
+    price: '0',
+    priceCurrency: 'USD',
+    description: 'Free inspection and written estimate',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: service.faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const related = services.filter(s => s.slug !== service.slug).slice(0, 3);
+---
+
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  canonicalPath={`/services/${service.slug}/`}
+  ogImage={service.image}
+  preloadHeroImage={service.image}
+  extraSchema={[serviceSchema, faqSchema]}
+>
+  <Breadcrumbs crumbs={[
+    { label: 'Services', href: '/services/' },
+    { label: service.navTitle, href: `/services/${service.slug}/` },
+  ]} />
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-ink via-brand-green-dark to-brand-green text-white">
+    <div class="max-w-container mx-auto px-4 py-12 sm:py-16 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
+      <div>
+        <p class="inline-block bg-brand-red text-white text-xs font-bold uppercase tracking-wide px-3 py-1 rounded mb-3">
+          {service.navTitle}
+        </p>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold leading-tight">
+          {service.h1}
+        </h1>
+        <p class="mt-3 text-xl text-brand-red-light font-medium">{service.hero.headline}</p>
+        <p class="mt-3 text-white/90 max-w-xl">{service.hero.sub}</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href={primaryCTA.href} class="inline-flex items-center justify-center gap-2 bg-brand-red hover:bg-brand-red-dark text-white font-semibold px-6 py-3.5 rounded-md min-h-[48px] shadow-lg">
+            Call {business.phone.primary}
+          </a>
+          <a href="/contact/" class="inline-flex items-center justify-center gap-2 bg-white/10 border-2 border-white/60 text-white font-semibold px-6 py-3.5 rounded-md min-h-[48px]">
+            Free Quote
+          </a>
+        </div>
+      </div>
+      <div>
+        <img
+          src={service.image}
+          alt={service.imageAlt}
+          width="800"
+          height="600"
+          fetchpriority="high"
+          class="rounded-lg shadow-2xl w-full h-auto"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="max-w-container mx-auto px-4 py-10">
+    <div class="max-w-3xl">
+      <p class="text-lg text-ink-soft leading-relaxed">{service.intro}</p>
+    </div>
+  </section>
+
+  {service.pests && (
+    <section class="max-w-container mx-auto px-4 pb-10">
+      <div class="bg-surface-soft border border-gray-200 rounded-lg p-6 sm:p-8">
+        <h2 class="text-2xl font-display font-bold text-ink mb-4">Pests We Treat</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-ink-soft">
+          {service.pests.map(p => (
+            <li class="flex items-start gap-2">
+              <span class="text-brand-red font-bold mt-0.5">&check;</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Features -->
+  <section class="max-w-container mx-auto px-4 py-10">
+    <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-6">What You Get</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {service.featureBullets.map(f => (
+        <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-card">
+          <h3 class="text-lg font-display font-bold text-ink">{f.title}</h3>
+          <p class="mt-2 text-ink-soft leading-relaxed">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="bg-surface-soft">
+    <div class="max-w-container mx-auto px-4 py-12 sm:py-16">
+      <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-8">Our Process</h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 counter-reset">
+        {service.process.map((p, i) => (
+          <li class="relative bg-white border border-gray-200 rounded-lg p-6">
+            <div class="w-10 h-10 bg-brand-red text-white rounded-full flex items-center justify-center font-bold mb-3">
+              {i + 1}
+            </div>
+            <h3 class="text-lg font-display font-bold text-ink">{p.step}</h3>
+            <p class="mt-2 text-ink-soft text-sm leading-relaxed">{p.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <TrustBadges variant="light" />
+
+  <!-- Service areas -->
+  <section class="max-w-container mx-auto px-4 py-12">
+    <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-4">
+      Where We Provide {service.navTitle}
+    </h2>
+    <p class="text-ink-soft mb-6 max-w-3xl">
+      We provide {service.navTitle.toLowerCase()} across the entire Dallas–Fort Worth metroplex. Click your city for local details, or call us at <a href={primaryCTA.href} class="text-brand-red font-semibold underline">{business.phone.primary}</a>.
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      {serviceAreas.map(a => (
+        <a href={`/service-areas/${a.slug}/`} class="bg-white border border-gray-200 rounded-md p-3 text-center hover:border-brand-red hover:shadow-card transition-all">
+          <span class="text-sm font-semibold text-ink">{a.city}, {a.state}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CTABand
+    headline={`Ready to solve your ${service.navTitle.toLowerCase()} problem?`}
+    sub={`Call ${business.phone.primary} for a free inspection. Certified applicator, no contracts.`}
+  />
+
+  <FAQBlock faqs={service.faqs} emitSchema={false} />
+
+  <!-- Related services -->
+  <section class="max-w-container mx-auto px-4 pb-16">
+    <h2 class="text-2xl sm:text-3xl font-display font-bold text-ink mb-6">Related Services</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {related.map(r => (
+        <a href={`/services/${r.slug}/`} class="group block bg-white border border-gray-200 rounded-lg p-5 hover:border-brand-red hover:shadow-card transition-all">
+          <h3 class="text-lg font-display font-bold text-ink group-hover:text-brand-red">{r.title}</h3>
+          <p class="mt-2 text-sm text-ink-soft">{r.shortDescription}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
